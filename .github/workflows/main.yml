@@ -15,19 +15,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  setup-version:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-latest]
-        dotnet-version: ['3.1', '5.0']
-        
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        dotnet: [ '2.1.x', '3.1.x', '5.0.x' ]
+    name: Dotnet ${{ matrix.dotnet }} sample
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
