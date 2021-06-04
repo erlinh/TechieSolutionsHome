@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         dotnet: [ '5.0.x' ]
-    name: Dotnet ${{ matrix.dotnet }} sample
+    name: Building using Dotnet ${{ matrix.dotnet }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -29,9 +29,9 @@ jobs:
         uses: garygrossgarten/github-action-scp@v0.7.3
         with:
           # Path to the local folder you want to copy.
-          local: ${{ secrets.LOCAL_FOLDER }}
+          local: ./
           # Path on the remote server to copy to.
-          remote: ${{ secrets.REMOTE_FOLDER }}
+          remote: ~/temp
           host: ${{ secrets.HOST_IP }}
           # Username for authentication.
           username: ${{ secrets.USER_NAME }}
