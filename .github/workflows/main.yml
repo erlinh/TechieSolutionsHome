@@ -1,0 +1,84 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  setup-version:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        dotnet-version: ['3.1', '5.0']
+        
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet ${{ matrix.dotnet-version }}
+        uses: ./
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Check installed version
+        shell: pwsh
+        run: |
+          $version = & dotnet --version
+          Write-Host "Installed version: $version"
+          if (-not $version.StartsWith("${{ matrix.dotnet-version }}")) { throw "Unexpected version" }
+
+        uses: garygrossgarten/github-action-scp@v0.7.3
+        with:
+          # Path to the local folder you want to copy.
+          local: ${{ secrets.LOCAL_FOLDER }}
+          # Path on the remote server to copy to.
+          remote: ${{ secrets.REMOTE_FOLDER }}
+          # Determines if files with  leading dot (.) on folder copy is included
+          dotfiles: # optional
+          # If it is a directory, remote files in it will be deleted before the copy is started.
+          rmRemote: # optional
+          # Number of concurrent file transfers.
+          concurrency: # optional, default is 1
+          # Wether copy of directory should be recursive
+          recursive: # optional, default is true
+          # Log status of every file copy
+          verbose: # optional, default is true
+          # Hostname or IP address of the server.
+          host: ${{ secrets.HOST_IP }}
+          # Username for authentication.
+          username: ${{ secrets.USER_NAME }}
+          # Port number of the server.
+          port: # optional, default is 22
+          # File Location or string that contains a private key for either key-based or hostbased user authentication (OpenSSH format)
+          privateKey: # optional
+          # Password for password-based user authentication.
+          password: ${{ secrets.PASSWORD }}
+          # For an encrypted private key, this is the passphrase used to decrypt it.
+          passphrase: # optional
+          # Try keyboard-interactive user authentication if primary user authentication method fails.
+          tryKeyboard: # optional
+          # Upload files to temporary file first, then rename once upload completed
+          atomicPut: # optional
+    
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
