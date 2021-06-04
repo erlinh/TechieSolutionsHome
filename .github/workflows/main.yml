@@ -37,13 +37,7 @@ jobs:
         uses: ./
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Check installed version
-        shell: pwsh
-        run: |
-          $version = & dotnet --version
-          Write-Host "Installed version: $version"
-          if (-not $version.StartsWith("${{ matrix.dotnet-version }}")) { throw "Unexpected version" }
-
+      - name: Copy to server
         uses: garygrossgarten/github-action-scp@v0.7.3
         with:
           # Path to the local folder you want to copy.
@@ -56,8 +50,3 @@ jobs:
           # Password for password-based user authentication.
           password: ${{ secrets.PASSWORD }}
     
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
