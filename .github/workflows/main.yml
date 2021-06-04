@@ -50,32 +50,11 @@ jobs:
           local: ${{ secrets.LOCAL_FOLDER }}
           # Path on the remote server to copy to.
           remote: ${{ secrets.REMOTE_FOLDER }}
-          # Determines if files with  leading dot (.) on folder copy is included
-          dotfiles: # optional
-          # If it is a directory, remote files in it will be deleted before the copy is started.
-          rmRemote: # optional
-          # Number of concurrent file transfers.
-          concurrency: # optional, default is 1
-          # Wether copy of directory should be recursive
-          recursive: # optional, default is true
-          # Log status of every file copy
-          verbose: # optional, default is true
-          # Hostname or IP address of the server.
           host: ${{ secrets.HOST_IP }}
           # Username for authentication.
           username: ${{ secrets.USER_NAME }}
-          # Port number of the server.
-          port: # optional, default is 22
-          # File Location or string that contains a private key for either key-based or hostbased user authentication (OpenSSH format)
-          privateKey: # optional
           # Password for password-based user authentication.
           password: ${{ secrets.PASSWORD }}
-          # For an encrypted private key, this is the passphrase used to decrypt it.
-          passphrase: # optional
-          # Try keyboard-interactive user authentication if primary user authentication method fails.
-          tryKeyboard: # optional
-          # Upload files to temporary file first, then rename once upload completed
-          atomicPut: # optional
     
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
