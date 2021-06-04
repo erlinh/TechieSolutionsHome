@@ -19,17 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet: [ '2.1.x', '3.1.x', '5.0.x' ]
+        dotnet: [ '5.0.x' ]
     name: Dotnet ${{ matrix.dotnet }} sample
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Setup dotnet ${{ matrix.dotnet-version }}
-        uses: ./
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
       - name: Copy to server
         uses: garygrossgarten/github-action-scp@v0.7.3
         with:
