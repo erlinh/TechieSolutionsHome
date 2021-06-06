@@ -15,6 +15,8 @@ namespace TechieHome
             Configuration = configuration;
         }
 
+        readonly string allowSpecificOrigins = "_AllowSpecificOrigins";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -27,6 +29,16 @@ namespace TechieHome
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: allowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://techie.fi",
+                                                          "https://www.techie.fi");
+                                  });
             });
         }
 
