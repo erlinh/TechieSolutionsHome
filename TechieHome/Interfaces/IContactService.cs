@@ -8,6 +8,6 @@ namespace TechieHome.Interfaces
 {
     public interface IContactService
     {
-        public Boolean SendEmail(Contact contact);
+        public void SendEmail(Contact contact);
     }
 }

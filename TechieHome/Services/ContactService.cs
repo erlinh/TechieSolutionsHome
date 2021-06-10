@@ -18,7 +18,14 @@ namespace TechieHome.Services
             Configuration = configuration;
 
         }
-        public Boolean SendEmail(Contact contact)
+
+        /// <summary>
+        /// Sends an email with the contact information.
+        /// It is tested with Gmail, but should work with any Email.
+        /// Make sure to allow less secure apps if you're using Gmail.
+        /// </summary>
+        /// <param name="contact"></param>
+        public void SendEmail(Contact contact)
         {
             using (var message = new MailMessage())
             {
@@ -37,23 +44,14 @@ namespace TechieHome.Services
                 message.Body = contact.message;
                 message.IsBodyHtml = true;
 
-                try
+                using (var client = new SmtpClient(Smtp))
                 {
-                    using (var client = new SmtpClient(Smtp))
-                    {
-                        client.Port = Port;
-                        client.EnableSsl = true;
-                        client.Credentials = new NetworkCredential(Username, Password);
-                        client.EnableSsl = true;
-                        client.Send(message);
-                    }
-
-                    return true;
-                } catch
-                {
-                    return false;
+                    client.Port = Port;
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential(Username, Password);
+                    client.EnableSsl = true;
+                    client.Send(message);
                 }
-
             }
         }
     }
